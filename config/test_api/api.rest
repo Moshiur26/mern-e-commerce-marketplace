@@ -1,0 +1,35 @@
+GET http://localhost:3000/api/users
+
+###
+
+GET http://localhost:3000/api/users/5fab79adc6a00a174c870822
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiNzlhZGM2YTAwYTE3NGM4NzA4MjIiLCJpYXQiOjE2MDUwOTMzNzR9.LUNrGPtQAowMIiHT4mfymo2apg_KAwQ47FZeoEIaxlE
+
+###
+
+POST http://localhost:3000/api/users/
+Content-Type: application/json
+
+{
+    "name": "Moshiur Rahman",
+    "email": "heloworld4@gmail.com",
+    "password": "1234@567"
+}
+
+###
+#for Delate a user
+POST  http://localhost:3000/api/users/5fab79adc6a00a174c870822
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiNzlhZGM2YTAwYTE3NGM4NzA4MjIiLCJpYXQiOjE2MDUwOTMzNzR9.LUNrGPtQAowMIiHT4mfymo2apg_KAwQ47FZeoEIaxlE
+
+###
+
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+    "email": "heloworld4@gmail.com",
+    "password": "1234@567"
+}
+
+###
+GET  http://localhost:3000/auth/signout
