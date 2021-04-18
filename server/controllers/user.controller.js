@@ -2,6 +2,18 @@ import User from '../models/user.model'
 import extend from 'lodash/extend'
 import errorHandler from './../helpers/dbErrorHandler'
 
+
+
+const isSeller = async (req, res, next) => {
+  const isSeller = req.profile && req.profile.seller
+  if (!isSeller) {
+      return res.status(403).json({
+          error: "User is not a seller"
+      })
+  }
+  next()
+}
+
 const create = async (req, res) => {
   const user = new User(req.body)
   try {
@@ -83,6 +95,7 @@ const remove = async (req, res) => {
 }
 
 export default {
+  isSeller,
   create,
   userByID,
   read,
