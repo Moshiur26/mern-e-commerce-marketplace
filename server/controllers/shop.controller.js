@@ -1,9 +1,8 @@
 import { extend } from 'lodash';
 import Shop from '../models/shop.model';
 import defaultImage from './../../client/assets/images/default.jpg';
-// import extend from 'lodash/extend'
-// import fs from 'fs'
-// import formidable from 'formidable'
+import fs from 'fs'
+import formidable from 'formidable'
 import dbErrorHandler from './../helpers/dbErrorHandler'
 
 
