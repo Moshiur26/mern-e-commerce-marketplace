@@ -42,7 +42,7 @@ const listByOwner = async (params, credentials, signal) => {
 
 const read = async (params, signal) => {
     try {
-        let response = await fetch('/api/shops/' + params.shopId, {
+        let response = await fetch('/api/shop/' + params.shopId, {
             method: 'GET',
             signal: signal
         })
@@ -54,6 +54,8 @@ const read = async (params, signal) => {
 
 const update = async (params, credentials, shop) => {
     try {
+        console.log("update shop response :-1");
+
         let response = await fetch('/api/shops/' + params.shopId, {
             method: 'PUT',
             headers: {
@@ -62,6 +64,7 @@ const update = async (params, credentials, shop) => {
             },
             body: shop
         })
+        console.log("update shop response :", response);
         return response.json()
     } catch (err) {
         console.log(err);
@@ -72,13 +75,15 @@ const remove = async (params, credentials) => {
     try {
         let response = await fetch('/api/shops/' + params.shopId, {
             method: 'DELETE',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + credentials.t
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + credentials.t
+            }
         })
         return response.json()
     } catch (err) {
-        console.log(err);
+        console.log("Error-> : ", err);
     }
 }
 

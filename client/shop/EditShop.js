@@ -87,19 +87,26 @@ export default function EditShop ({match}) {
   }, [])
 
   const clickSubmit = () => {
+    console.log("Click submit-1");
     let shopData = new FormData()
     values.name && shopData.append('name', values.name)
     values.description && shopData.append('description', values.description)
     values.image && shopData.append('image', values.image)
+    console.log("Click submit-2");
+
     update({
       shopId: match.params.shopId
     }, {
       t: jwt.token
     }, shopData).then((data) => {
       if (data.error) {
+        console.log("Click submit-3");
+
         setValues({...values, error: data.error})
       } else {
-        setValues({...values, 'redirect': true})
+        console.log("Click submit-4");
+
+        setValues({...values, redirect: true})
       }
     })
   }

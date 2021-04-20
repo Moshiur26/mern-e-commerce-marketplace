@@ -12,8 +12,8 @@ router.route('/api/shop/:shopId')
   .get(shopCtrl.read)
 
 router.route('/api/shops/by/:userId')
-  .get(authCtrl.requireSignin, authCtrl.hasAuthorization, shopCtrl.listByOwner)
   .post(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.isSeller, shopCtrl.create)
+  .get(authCtrl.requireSignin, authCtrl.hasAuthorization, shopCtrl.listByOwner)
 
 router.route('/api/shops/:shopId')
   .put(authCtrl.requireSignin, shopCtrl.isOwner, shopCtrl.update)

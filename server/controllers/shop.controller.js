@@ -1,8 +1,8 @@
-import { extend } from 'lodash';
 import Shop from '../models/shop.model';
 import defaultImage from './../../client/assets/images/default.jpg';
-import fs from 'fs'
+import extend from 'lodash/extend'
 import formidable from 'formidable'
+import fs from 'fs'
 import dbErrorHandler from './../helpers/dbErrorHandler'
 
 
@@ -10,11 +10,13 @@ const shopByID = async (req, res, next, id) => {
   try {
     let shop = await Shop.findById(id).populate('owner', '_id name').exec()
     if (!shop) {
+      console.log("Shop not found");
       return res.status(400).json({
         error: 'Shop not found'
       })
     }
     req.shop = shop
+    // console.log("shopById-image: ",shop.image);
     next()
   } catch (err) {
     return res.status(400).json({
@@ -50,37 +52,39 @@ const create = (req, res) => {
     })
   }
 
-  const update = (req, res) => {
-    let form = new formidable.IncomingForm()
-    form.keepExtensions = true
+const update = (req, res) => {
+  let form = new formidable.IncomingForm()
+  form.keepExtensions = true
 
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        return res.status(400).json({
-          error: "Image could not be uploaded"
-        })
-      }
-      
-      let shop = req.shop
-      shop = extend(shop, fields)
-      shop.updated= Date.now()
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Image could not be uploaded"
+      })
+    }
+    
+    let shop = req.shop
 
-      if(files.image){
-        shop.image.data = fs.readFileSync(files.image.path)
-        shop.image.contentType = files.image.type
-      }
+    shop = extend(shop, fields)
+    shop.updated= Date.now()
+    
+    if(files.image){
+      shop.image.data = fs.readFileSync(files.image.path)
+      shop.image.contentType = files.image.type
+    }
 
-      try {
-        let result = await shop.save()
-        res.json(result)
-      } catch (err) {
-        return res.status(400).json({
-          error: dbErrorHandler.getErrorMessage(err)
-        })
-      }
-    })
-  }
 
+    try {
+      let result = await shop.save()
+      res.json(result)
+    } catch (err) {
+      return res.status(400).json({
+        error: dbErrorHandler.getErrorMessage(err)
+      })
+    }
+  })
+}
+  
 const remove = async (req, res) => {
   try {
     let shop = req.shop
@@ -95,7 +99,7 @@ const remove = async (req, res) => {
 }
 
 const photo = (req, res, next) => {
-  if (req.shop.image.data){
+  if (req.shop.image && req.shop.image.data){
     res.set("Content-Type", req.shop.image.contentType)
     return res.send(req.shop.image.data)
   }
@@ -139,6 +143,7 @@ const isOwner = async (req, res, next) => {
     return res.status(403).json({
       error: 'User is not authorized'
     })
+  
   next()
 }
 

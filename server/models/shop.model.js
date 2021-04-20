@@ -1,28 +1,24 @@
 import mongoose from 'mongoose'
-
 const ShopSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
     required: 'Name is required'
   },
-  description: {
-    type: String,
-    trim: true,
-  },
   image: {
-    type: Buffer,
+    data: Buffer,
     contentType: String
   },
-  owner: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User'
+  description: {
+    type: String,
+    trim: true
   },
   updated: Date,
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+  owner: {type: mongoose.Schema.ObjectId, ref: 'User'}
 })
 
 export default mongoose.model('Shop', ShopSchema)

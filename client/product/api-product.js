@@ -1,17 +1,17 @@
 import queryString from 'query-string';
 const create = async (params, credentials, product) => {
     try {
-        let response = await fetch('/api/products/by' + params.shopId, {
+        let response = await fetch('/api/products/by/' + params.shopId, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Authorization': 'Bearer ' + credentials.t,
+                'Authorization': 'Bearer ' + credentials.t
             },
             body: product
         })
         return response.json()
     } catch(err) {
-        console.log(err);
+        console.log("Error->", err);
     }
 }
 
@@ -33,7 +33,7 @@ const update = async (params, credentials, product) => {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Authorizations': 'Bearer ' + credentials.t
+                'Authorization': 'Bearer ' + credentials.t
             },
             body: product
         })

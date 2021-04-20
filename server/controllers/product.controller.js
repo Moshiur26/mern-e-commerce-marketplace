@@ -2,35 +2,37 @@ import Product from './../models/product.model';
 import formidable from 'formidable';
 import fs from 'fs';
 import dbErrorHandler from '../helpers/dbErrorHandler';
-import defaultImage from '../../client/assets/images/default_product.png';
+import defaultImage from '../../client/assets/images/default_product.jpg';
 import { extend } from 'lodash';
 
-const create = (req, res) => {
+const create = (req, res, next) => {
     let form = new formidable.IncomingForm()
     form.keepExtensions = true
-    form.parse(req, async(err, fields, files) => {
+    form.parse(req, async (err, fields, files) => {
         if (err) {
             return res.status(400).json({
-                message: 'Image could not be uploaded'
+            message: "Image could not be uploaded"
             })
         }
+
         let product = new Product(fields)
         product.shop = req.shop
-        if (files.image) {
+
+        if(files.image){
             product.image.data = fs.readFileSync(files.image.path)
             product.image.contentType = files.image.type
         }
         try {
             let result = await product.save()
             res.json(result)
-        } catch (err) {
+        } catch (err){
             return res.status(400).json({
-                error: dbErrorHandler.getErrorMessage(err)
+                error: errorHandler.getErrorMessage(err)
             })
         }
     })
 }
-
+  
 const productByID = async (req, res, next, id) => {
     try {
         let product = await Product.findById(id).populate('shop', '_id name').exec()
@@ -48,7 +50,7 @@ const productByID = async (req, res, next, id) => {
     }
 }
 
-const photo = (req, res) => {
+const photo = (req, res, next) => {
     if (req.product.image.data) {
         res.set("Content-Type", req.product.image.contentType)
         return res.send(req.product.image.data)
@@ -56,7 +58,7 @@ const photo = (req, res) => {
     next()
 }
 
-const defaultPhoto = (req, res, next) => {
+const defaultPhoto = (req, res) => {
     return res.sendFile(process.cwd() + defaultImage)
 }
 
@@ -66,7 +68,7 @@ const read = (req, res) => {
     return res.json(product)
 }
 
-const update = (req, res) => {
+const update = (req, res, next) => {
     let form = new formidable.IncomingForm()
     form.keepExtensions = true
     form.parse(req, async (err, fields, files) => {
@@ -78,6 +80,7 @@ const update = (req, res) => {
         let product = req.product
         product = extend(product, fields)
         product.updated = Date.now()
+
         if (files.image) {
             product.image.data = fs.readFileSync(files.image.path)
             product.image.contentType = files.image.type
