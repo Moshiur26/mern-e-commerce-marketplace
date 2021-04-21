@@ -11,7 +11,7 @@ import Divider from '@material-ui/core/Divider'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
-// import AddToCart from './../cart/AddToCart'
+import AddToCart from './../cart/AddToCart'
 
 const useStyles = makeStyles(theme => ({
   root: theme.mixins.gutters({
@@ -94,11 +94,12 @@ export default function Suggestions (props) {
                 <div className={classes.details}>
                   <CardContent className={classes.content}>
                     <Link to={'/product/'+item._id}><Typography variant="h3" component="h3" className={classes.productTitle} color="primary">{item.name}</Typography></Link>
-                    <Link to={'/shops/'+item.shop._id}>
+                    {item.shop && <Link to={'/shops/'+item.shop._id}>
                       <Typography type="subheading" className={classes.subheading}>
                         <Icon className={classes.icon}>shopping_basket</Icon> {item.shop.name}
                       </Typography>
                     </Link>
+                    }
                     <Typography component="p" className={classes.date}>
                         Added on {(new Date(item.created)).toDateString()}
                     </Typography>
@@ -111,7 +112,7 @@ export default function Suggestions (props) {
                             <ViewIcon className={classes.iconButton}/>
                           </IconButton>
                         </Link>
-                        {/* <AddToCart item={item}/> */}
+                        <AddToCart item={item}/>
                       </span>
                     </div>
                   </div>
