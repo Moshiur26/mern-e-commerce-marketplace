@@ -170,6 +170,39 @@ const list = async (req, res) => {
     }
 }
 
+
+const decreaseQuantity = async (req, res, next) => {
+    let bulkOps = req.body.order.products.map((item) => {
+      return {
+          "updateOne": {
+              "filter": { "_id": item.product._id } ,
+              "update": { "$inc": {"quantity": -item.quantity} }
+          }
+      }
+     })
+     try {
+       await Product.bulkWrite(bulkOps, {})
+       next()
+     } catch (err){
+        return res.status(400).json({
+          error: "Could not update product"
+        })
+     }
+  }
+  
+  const increaseQuantity = async (req, res, next) => {
+    try {
+      await Product.findByIdAndUpdate(req.product._id, {$inc: {"quantity": req.body.quantity}}, {new: true})
+      .exec()
+        next()
+    } catch (err){
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+  }
+  
+
 export default {
     create,
     productByID,
@@ -182,5 +215,7 @@ export default {
     listLatest,
     listRelated,
     listCategories,
-    list
+    list,
+    decreaseQuantity,
+    increaseQuantity
 }

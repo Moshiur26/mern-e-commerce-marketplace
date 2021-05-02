@@ -16,6 +16,7 @@ import DeleteUser from './DeleteUser'
 import auth from './../auth/auth-helper'
 import {read} from './api-user.js'
 import {Redirect, Link} from 'react-router-dom'
+import MyOrders from './../order/MyOrders'
 
 const useStyles = makeStyles(theme => ({
   root: theme.mixins.gutters({
@@ -89,6 +90,8 @@ export default function Profile({ match }) {
               new Date(user.created)).toDateString()}/>
           </ListItem>
         </List>
+        <MyOrders/>
+
       </Paper>
     )
   }

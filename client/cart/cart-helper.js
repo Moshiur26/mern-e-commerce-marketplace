@@ -13,11 +13,19 @@ const cart = {
         if (localStorage.getItem('cart')) {
           cart = JSON.parse(localStorage.getItem('cart'))
         }
+        item.shop ? 
         cart.push({
           product: item,
           quantity: 1,
           shop: item.shop._id
         })
+        :
+        cart.push({
+          product: item,
+          quantity: 1,
+          // shop: item.shop._id
+        })
+
         localStorage.setItem('cart', JSON.stringify(cart))
         cb()
       }

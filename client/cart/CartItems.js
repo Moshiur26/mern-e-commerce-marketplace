@@ -142,7 +142,7 @@ export default function CartItems (props) {
                   <div>
                     <Typography type="subheading" component="h3" className={classes.price} color="primary">$ {item.product.price}</Typography>
                     <span className={classes.itemTotal}>${item.product.price * item.quantity}</span>
-                    <span className={classes.itemShop}>Shop: {item.product.shop.name}</span>
+                    {item.product.shop && <span className={classes.itemShop}>Shop: {item.product.shop.name}</span>}
                   </div>
                 </CardContent>
                 <div className={classes.subheading}>

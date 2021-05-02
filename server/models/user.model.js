@@ -22,6 +22,8 @@ const UserSchema = new mongoose.Schema({
     required: "Password is required"
   },
   salt: String,
+  stripe_seller: {},
+  stripe_customer: {},
   updated: Date,
   created: {
     type: Date,
